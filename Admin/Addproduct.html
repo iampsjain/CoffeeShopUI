@@ -1,0 +1,141 @@
+<html>
+<head>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+</head>
+<body ng-app="myApp" ng-controller="myCtrl">
+<div class="container">
+<div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="card-header">Register</div>
+                            <div class="card-body">
+
+                                <form class="form-horizontal" id="myform" method="post" action="#">
+
+                                    <div class="form-group">
+                                        <label for="title" class="cols-sm-2 control-label">Product Title</label>
+                                        <div class="cols-sm-10">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                                                <input type="text" class="form-control" name="title" id="title" placeholder="Enter title of product" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="imgurl" class="cols-sm-2 control-label">Image Url</label>
+                                        <div class="cols-sm-10">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
+                                                <input type="text" class="form-control" name="imgurl" id="imgurl" placeholder="Enter Image Url" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="description" class="cols-sm-2 control-label">Description</label>
+                                        <div class="cols-sm-10">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+                                                <input type="textarea" class="form-control" name="description" id="description" placeholder="Enter Description of product" />
+                                            </div>
+                                        </div>
+                                    </div>
+									  <div class="form-group">
+                                        <label for="shortDesc" class="cols-sm-2 control-label">Short Description</label>
+                                        <div class="cols-sm-10">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                                                <input type="text" class="form-control" name="shortDesc" id="shortDesc" placeholder="Enter Product price" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="price" class="cols-sm-2 control-label">Price</label>
+                                        <div class="cols-sm-10">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                                                <input type="text" class="form-control" name="price" id="price" placeholder="Enter Product price" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                   
+                                    <div class="form-group ">
+                                        <button type="submit" ng-click="convertandcall()" class="btn btn-primary">Add Product</button>
+       <button type="button" class="btn btn-danger reset">Clear form</button>
+                                                                     
+								   </div>
+                                   
+                                </form>
+								
+<pre id="result" ng-model="resultdata">
+</pre>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+</div>
+
+<script>
+
+
+$.fn.serializeObject = function()
+{
+    var o = {};
+    var a = this.serializeArray();
+    $.each(a, function() {
+        if (o[this.name] !== undefined) {
+            if (!o[this.name].push) {
+                o[this.name] = [o[this.name]];
+            }
+            o[this.name].push(this.value || '');
+        } else {
+            o[this.name] = this.value || '';
+        }
+    });
+    return o;
+};
+
+$(function() {
+    $('form').submit(function() {
+       $('#result').text();
+		
+        return false;
+    });
+});
+
+$(".reset").click(function() {
+    $(this).closest('form').find("input[type=text], input[type=textarea]").val("");
+});
+
+var url="http://localhost:8888/product";
+
+var app = angular.module('myApp', []);
+app.controller('myCtrl', function($scope, $http) {
+  $scope.resultdata;
+  $scope.convertandcall=function(){
+ alert($scope.resultdata=JSON.stringify($('form').serializeObject()));
+		
+  $http.post(url, $scope.resultdata)
+  .then(function(response) {
+      $scope.myWelcome = response.data;
+		console.log($scope.myWelcome);		
+  });
+  }
+});
+
+
+function moveforward(id){
+	alert(id);
+	window.location.href = 'portfolio-item.html?id='+id;
+}
+
+</script>
+</body>
+</html>
